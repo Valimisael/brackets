@@ -1,7 +1,5 @@
 module.exports = function check(str, bracketsConfig) {
-  var brackets = str.split('');
-
-  if (brackets.length % 2 != 0) return false;
+  if (str.length % 2 != 0) return false;
 
   var openers = [],
       closers = [];
@@ -14,16 +12,27 @@ module.exports = function check(str, bracketsConfig) {
   var matchingOpener,
       arrOfBrackets = [];
 
-  for (var i = 0; i < brackets.length; i++) {
-    var bracket = brackets[i];
+  for (var i = 0; i < str.length; i++) {
+    var bracket = str[i];
     for (var j = 0; j < openers.length; j++) {
-      if (bracket == openers[j]) {
-        arrOfBrackets.push(bracket);
-      }
-      if (bracket == closers[j]) {
-        matchingOpener = openers[closers.indexOf(bracket)];
-        if (arrOfBrackets.pop() != matchingOpener) {
-          return false;
+      if (bracket == openers[j] && bracket == closers[j]) {
+        if (arrOfBrackets.indexOf(bracket) == -1) {
+          arrOfBrackets.push(bracket);
+        } else {
+          matchingOpener = openers[closers.indexOf(bracket)];
+          if (arrOfBrackets.pop() != matchingOpener) {
+            return false;
+          }
+        }
+      } else {
+        if (bracket == openers[j]) {
+          arrOfBrackets.push(bracket);
+        }
+        if (bracket == closers[j]) {
+          matchingOpener = openers[closers.indexOf(bracket)];
+          if (arrOfBrackets.pop() != matchingOpener) {
+            return false;
+          }
         }
       }
     }
